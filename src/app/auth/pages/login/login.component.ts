@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +12,13 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   myForm: FormGroup = this._fb.group({
-    email: ['eduardo@gmail.com', [Validators.required, Validators.email]],
+    email: ['test1@gmail.com', [Validators.required, Validators.email]],
     password: ['123456', [Validators.required, Validators.minLength(6)]]
   });
 
   constructor( private _fb: FormBuilder,
-               private _router: Router ) { }
+               private _router: Router,
+               private _authService: AuthService ) { }
 
   ngOnInit(): void {
   }
@@ -32,7 +34,10 @@ export class LoginComponent implements OnInit {
       return;
     }
     console.log(this.myForm.value);
-    this._router.navigateByUrl('/dashboard')
+    const { email, password } = this.myForm.value;
+    this._authService.login( email, password)
+      .subscribe( auth => console.log(auth) );
+    // this._router.navigateByUrl('/dashboard')
   }
 
 }
