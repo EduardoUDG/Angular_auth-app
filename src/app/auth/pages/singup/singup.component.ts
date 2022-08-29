@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-singup',
@@ -15,9 +16,8 @@ export class SingupComponent implements OnInit {
     password: ['123456', [Validators.required, Validators.minLength(6)]]
   });
 
-  constructor(
-    private _fb: FormBuilder
-  ) { }
+  constructor( private _fb: FormBuilder,
+               private _router: Router ) { }
 
   ngOnInit(): void {
   }
@@ -33,5 +33,6 @@ export class SingupComponent implements OnInit {
       return;
     }
     console.log(this.myForm.value);
+    this._router.navigateByUrl('/dashboard');
   }
 }
