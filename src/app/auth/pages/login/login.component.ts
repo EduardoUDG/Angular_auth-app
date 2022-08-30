@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -36,11 +38,11 @@ export class LoginComponent implements OnInit {
     console.log(this.myForm.value);
     const { email, password } = this.myForm.value;
     this._authService.login( email, password)
-      .subscribe( ok => {
-        if( ok ) {
+      .subscribe( ok => { // return true or error message
+        if( ok === true ) {
           this._router.navigateByUrl('/dashboard')
         } else {
-          //TODO show error message
+          Swal.fire('Error', ok, 'error'); // Show error alert
         }
       });
   }
