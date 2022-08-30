@@ -1,6 +1,6 @@
 
 export interface AuthResponse {
-  ok:     string;
+  ok:     boolean;
   uid?:   string;
   name?:  string;
   token?: string;
