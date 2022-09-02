@@ -37,6 +37,24 @@ export class AuthService {
   }
 
 
+  signUp(name:string, email:string, password:string) {
+    const url = `${this._baseUrl}/auth/new`;
+    const body = { name, email, password };
+
+    return this._http.post<AuthResponse>(url, body)
+      .pipe(
+        tap( resp => {
+          localStorage.setItem('token', resp.token!);
+          if( resp.ok ) {
+            this._user = { name: resp.name!, uid:resp.uid! }
+          }
+        }),
+        map( resp => resp.ok ),
+        catchError( err => of(err.error.msg) ) // Error message
+      );
+  }
+
+
   validateToken():Observable<boolean> {
     const url = `${this._baseUrl}/auth/renew`;
     const headers = new HttpHeaders()
@@ -53,6 +71,10 @@ export class AuthService {
         }),
         catchError( err => of(false) )
       );
+  }
+
+  logout() {
+    localStorage.removeItem('token');
   }
 
 

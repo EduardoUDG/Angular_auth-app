@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-singup',
   templateUrl: './singup.component.html',
@@ -16,8 +19,11 @@ export class SingupComponent implements OnInit {
     password: ['123456', [Validators.required, Validators.minLength(6)]]
   });
 
-  constructor( private _fb: FormBuilder,
-               private _router: Router ) { }
+  constructor(
+    private _fb: FormBuilder,
+    private _router: Router,
+    private _authService: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -29,10 +35,18 @@ export class SingupComponent implements OnInit {
 
   register():void {
     if( this.myForm.invalid ) {
-      console.log('Formulario invalido');
       return;
     }
     console.log(this.myForm.value);
-    this._router.navigateByUrl('/dashboard');
+    const { name, email, password } = this.myForm.value;
+    this._authService.signUp(name, email, password)
+    .subscribe( ok => { // return true or error message
+      if( ok === true ) {
+        this._router.navigateByUrl('/dashboard')
+      } else {
+        Swal.fire('Error', ok, 'error'); // Show error alert
+      }
+    });
+    // end auth service
   }
 }
