@@ -27,9 +27,6 @@ export class AuthService {
       .pipe(
         tap( resp => {
           localStorage.setItem('token', resp.token!);
-          if( resp.ok ) {
-            this._user = { name: resp.name!, uid:resp.uid! }
-          }
         }),
         map( resp => resp.ok ),
         catchError( err => of(err.error.msg) ) // Error message
@@ -45,9 +42,6 @@ export class AuthService {
       .pipe(
         tap( resp => {
           localStorage.setItem('token', resp.token!);
-          if( resp.ok ) {
-            this._user = { name: resp.name!, uid:resp.uid! }
-          }
         }),
         map( resp => resp.ok ),
         catchError( err => of(err.error.msg) ) // Error message
@@ -65,7 +59,7 @@ export class AuthService {
         map( resp => {
           localStorage.setItem('token', resp.token!);
           if( resp.ok ) {
-            this._user = { name: resp.name!, uid:resp.uid! }
+            this._user = { name: resp.name!, uid:resp.uid!, email: resp.email! }
           }
           return resp.ok;
         }),
