@@ -10,6 +10,12 @@ import { AuthService } from '../../auth/services/auth.service';
     * {
       margin: 15px;
     }
+    button {
+      padding: 10px 25px;
+      border-radius: 0.25rem;
+      background-color: #000;
+      color: #fff;
+    }
     `
   ]
 })
